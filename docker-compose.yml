@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    image: restapi8
+    ports:
+      - "9010:9010"
+    depends_on:
+      - postgres  # ждём запуска PostgreSQL
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/spring
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=gindenburg123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  postgres:
+    image: postgres:17-alpine  # лёгкий образ PostgreSQL
+    environment:
+      - POSTGRES_DB=spring
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=gindenburg123
+    ports:
+      - "5432:5432"  # пробрасываем порт наружу (для подключения из IDE)
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # сохраняем данные между перезапусками
+volumes:
+  postgres-data:  # том для хранения данных PostgreSQL
