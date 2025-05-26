@@ -1,13 +1,21 @@
 package com.async.restApi8.dto;
 
 
-public class ItemDto {
+public record ItemResponseDto(
+        Long id,
+        String title,
+        String content,
+        String author
+) {
+
+
+    /*
     private final Long id;
     private final String title;
     private final String content;
     private final String author;
 
-    public ItemDto(Long id, String title, String content, String author) {
+    public ItemResponseDto(Long id, String title, String content, String author) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -29,6 +37,8 @@ public class ItemDto {
     public String getAuthor() {
         return author;
     }
+
+     */
 }
 
 

@@ -1,20 +1,16 @@
 package com.async.restApi8.controller;
 
-import com.async.restApi8.dto.ItemDto;
+import com.async.restApi8.dto.ItemRequestDto;
+import com.async.restApi8.dto.ItemResponseDto;
 import com.async.restApi8.entity.Item;
-import com.async.restApi8.mapper.ItemMapper;
 import com.async.restApi8.service.ItemService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import java.util.ArrayList;
@@ -51,9 +47,9 @@ public class ItemControllerRestTest {
     public void addNewItem_ExpectSuccessMessage() throws Exception {
         Long testId = 1L;
         //Item testItem = new Item("TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
-        ItemDto testItemDto = new ItemDto(testId, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
+        ItemResponseDto testItemResponseDto = new ItemResponseDto(testId, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
 
-        when(itemService.addItem(any(Item.class))).thenReturn(testItemDto);
+        when(itemService.addItem(any(ItemRequestDto.class))).thenReturn(testItemResponseDto);
 
         mockMvc.perform(put("/item/addItem")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +63,7 @@ public class ItemControllerRestTest {
 
     @Test
     public void addNewItem_ExpectErrorMessage() throws Exception {
-        when(itemService.addItem(any(Item.class))).thenThrow(ServiceException.class);
+        when(itemService.addItem(any(ItemRequestDto.class))).thenThrow(ServiceException.class);
 
         mockMvc.perform(put("/item/addItem")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +77,7 @@ public class ItemControllerRestTest {
     @Test
     public void getItemById_ExpectSucess() throws Exception {
         Long testId = 1L;
-        ItemDto testDto = new ItemDto(testId, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
+        ItemResponseDto testDto = new ItemResponseDto(testId, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
 
         when(itemService.getItemById(testId)).thenReturn(testDto);
 
@@ -106,10 +102,10 @@ public class ItemControllerRestTest {
 
     @Test
     public void getAllItems_ExpectSucess() throws Exception {
-        List<ItemDto> testList = new ArrayList<>();
-        testList.add(new ItemDto(1L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
-        testList.add(new ItemDto(2L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
-        testList.add(new ItemDto(3L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
+        List<ItemResponseDto> testList = new ArrayList<>();
+        testList.add(new ItemResponseDto(1L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
+        testList.add(new ItemResponseDto(2L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
+        testList.add(new ItemResponseDto(3L, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR"));
 
         when(itemService.getAllItems()).thenReturn(testList);
 

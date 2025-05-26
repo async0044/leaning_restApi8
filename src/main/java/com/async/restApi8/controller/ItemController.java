@@ -1,8 +1,8 @@
 package com.async.restApi8.controller;
 
-import com.async.restApi8.dto.ItemDto;
+import com.async.restApi8.dto.ItemRequestDto;
+import com.async.restApi8.dto.ItemResponseDto;
 import com.async.restApi8.entity.Item;
-import com.async.restApi8.mapper.ItemMapper;
 import com.async.restApi8.service.ItemService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
@@ -22,24 +22,24 @@ public class ItemController {
     }
 
 
-    @PutMapping("/addItem")
-    public ResponseEntity<ItemDto> addItem(@RequestBody Item item) {
+    @PostMapping("/addItem")
+    public ResponseEntity<ItemResponseDto> addItem(@RequestBody ItemRequestDto itemRequestDto) {
         try {
-            return ResponseEntity.ok(itemService.addItem(item));
+            return ResponseEntity.ok(itemService.addItem(itemRequestDto));
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 /*
     @GetMapping("/getItemById")
-    public ItemDto getItemById(@RequestParam Long id) {
+    public ItemResponseDto getItemById(@RequestParam Long id) {
         return itemService.getItemById(id);
     }
 */
     @GetMapping("/getItemById/{id}")
     public ResponseEntity<?> getItemById(@PathVariable Long id) {
         try {
-            ItemDto dto = itemService.getItemById(id);              //сделать конкретные ответы по ошибкам catch (NotFounExeption)... catch (AccessDeniedException)...
+            ItemResponseDto dto = itemService.getItemById(id);              //сделать конкретные ответы по ошибкам catch (NotFounExeption)... catch (AccessDeniedException)...
             return ResponseEntity.ok(dto);
         }
         catch (ServiceException e) {
@@ -50,7 +50,7 @@ public class ItemController {
 
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<List<ItemDto>> getAllItems() {
+    public ResponseEntity<List<ItemResponseDto>> getAllItems() {
         try {
             return ResponseEntity.ok(itemService.getAllItems());
         }
@@ -60,7 +60,7 @@ public class ItemController {
     }
 
     @PatchMapping("/updateById")
-    public ResponseEntity<ItemDto> updateById(@RequestBody Item item) {
+    public ResponseEntity<ItemResponseDto> updateById(@RequestBody Item item) {
         try {
             return ResponseEntity.ok(itemService.updateItem(item));
         }
@@ -70,10 +70,10 @@ public class ItemController {
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<ItemDto> deleteById(@PathVariable Long id) {
+    public ResponseEntity<ItemResponseDto> deleteById(@PathVariable Long id) {
         try {
-            ItemDto itemDto = itemService.deleteItem(id);
-            return ResponseEntity.ok(itemDto);
+            ItemResponseDto itemResponseDto = itemService.deleteItem(id);
+            return ResponseEntity.ok(itemResponseDto);
         }
         catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
