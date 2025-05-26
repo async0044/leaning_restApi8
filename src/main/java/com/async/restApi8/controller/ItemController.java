@@ -25,7 +25,7 @@ public class ItemController {
     @PostMapping("/addItem")
     public ResponseEntity<ItemResponseDto> addItem(@RequestBody ItemRequestDto itemRequestDto) {
         try {
-            return ResponseEntity.ok(itemService.addItem(itemRequestDto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(itemService.addItem(itemRequestDto));
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

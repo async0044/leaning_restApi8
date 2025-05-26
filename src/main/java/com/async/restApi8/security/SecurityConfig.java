@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/user/**").permitAll()
-                        .requestMatchers("/item/**").authenticated()
+                        .requestMatchers("/item/**").permitAll()
                         .requestMatchers("/data/**").authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll);
 
