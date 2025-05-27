@@ -7,6 +7,7 @@ import com.async.restApi8.mapper.UserMapper;
 import com.async.restApi8.repository.UserRepository;
 import jdk.jshell.spi.ExecutionControl;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

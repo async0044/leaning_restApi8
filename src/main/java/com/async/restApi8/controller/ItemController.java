@@ -30,12 +30,7 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-/*
-    @GetMapping("/getItemById")
-    public ItemResponseDto getItemById(@RequestParam Long id) {
-        return itemService.getItemById(id);
-    }
-*/
+
     @GetMapping("/getItemById/{id}")
     public ResponseEntity<?> getItemById(@PathVariable Long id) {
         try {

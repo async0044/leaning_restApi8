@@ -29,13 +29,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUser")         //делаем поиск по любому слову
+    @GetMapping("/getUser")
     public ResponseEntity<UserResponseDto> getUser(@RequestParam String query) {
         try {
             return ResponseEntity.ok(userService.getUser(query));
         }
-        catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

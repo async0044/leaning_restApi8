@@ -4,13 +4,16 @@ import com.async.restApi8.dto.ItemRequestDto;
 import com.async.restApi8.dto.ItemResponseDto;
 import com.async.restApi8.entity.Item;
 import com.async.restApi8.service.ItemService;
+import org.aspectj.lang.annotation.Before;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import java.util.ArrayList;
@@ -20,20 +23,14 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(controllers = ItemController.class)
 public class ItemControllerRestTest {
-
-         /*
-    addNewItem      +
-    getItemById     +
-    getAllItems     +
-    modifyItemById  +
-    deleteItemById  +
-     */
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,15 +40,16 @@ public class ItemControllerRestTest {
 
     //--------------    addNewItem
 
-    @Test
+    @Test                                   //TODO  РАЗБИРАЕМСЯ С АВТОРИЗАЦИЕЙ В ТЕСТАХ
+    @WithMockUser
     public void addNewItem_ExpectSuccessMessage() throws Exception {
         Long testId = 1L;
-        //Item testItem = new Item("TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
         ItemResponseDto testItemResponseDto = new ItemResponseDto(testId, "TEST-TITLE", "TEST-CONTENT", "TEST-AUTHOR");
 
         when(itemService.addItem(any(ItemRequestDto.class))).thenReturn(testItemResponseDto);
 
         mockMvc.perform(put("/item/addItem")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\":\"TEST-TITLE\",\"content\":\"TEST-CONTENT\",\"author\":\"TEST-AUTHOR\"}"))
                 .andExpect(status().isOk())
