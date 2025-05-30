@@ -4,6 +4,7 @@ import com.async.restApi8.dto.UserRequestDto;
 import com.async.restApi8.dto.UserResponseDto;
 import com.async.restApi8.entity.User;
 import com.async.restApi8.service.UserService;
+import jakarta.validation.Valid;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,44 +21,40 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto userRequestDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(userRequestDto));
-        }
-        catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<UserResponseDto> addUser(@RequestBody @Valid UserRequestDto userRequestDto) {
+            return ResponseEntity.ok().body(userService.addUser(userRequestDto));
+    }
+/*
+    @GetMapping("/getUser")
+    public ResponseEntity<UserResponseDto> getUser(@RequestParam @Valid String query) {
+            return ResponseEntity.ok(userService.getUser(query));   TODO идея классная, запомнить
+    }
+*/
+    @GetMapping("/getUserById")
+    public ResponseEntity<UserResponseDto> getUserById(@RequestParam("id") Long id) {
+        return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
-    @GetMapping("/getUser")
-    public ResponseEntity<UserResponseDto> getUser(@RequestParam String query) {
-        try {
-            return ResponseEntity.ok(userService.getUser(query));
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    @GetMapping("/getUserByUsername")
+    public ResponseEntity<UserResponseDto> getUserByUsername(@RequestParam("username") String username) {
+        return ResponseEntity.ok().body(userService.getUserByUsername(username));
+    }
+
+    @GetMapping("/getUserByEmail")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@RequestParam("email") String email) {
+        return ResponseEntity.ok().body(userService.getUserByEmail(email));
     }
 
     @DeleteMapping("/deleteUserById")
-    public ResponseEntity<UserResponseDto> deleteUserById(@RequestParam Long id) {
-        try {
-            return ResponseEntity.ok(userService.deleteUserById(id));
-        }
-        catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<UserResponseDto> deleteUserById(@RequestParam("id") Long id) {
+        return ResponseEntity.ok().body(userService.deleteUserById(id));
     }
 
 
+
     @PatchMapping("/updateUserById")
-    public ResponseEntity<UserResponseDto> updateUser(@RequestParam Long id, @RequestBody UserRequestDto userRequestDto) {
-        try {
-            return ResponseEntity.ok(userService.updateUserById(id, userRequestDto));
-        }
-        catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<UserResponseDto> updateUser(@RequestParam("id") Long id, @RequestBody @Valid UserRequestDto userRequestDto) {
+        return ResponseEntity.ok(userService.updateUserById(id, userRequestDto));
     }
 
 

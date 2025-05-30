@@ -3,6 +3,7 @@ package com.async.restApi8.mapper;
 import com.async.restApi8.dto.UserRequestDto;
 import com.async.restApi8.dto.UserResponseDto;
 import com.async.restApi8.entity.User;
+import org.springframework.http.HttpStatus;
 
 public class UserMapper {
 

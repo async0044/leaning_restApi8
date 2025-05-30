@@ -1,6 +1,7 @@
 package com.async.restApi8.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
 
 public record UserResponseDto(
         Long id,

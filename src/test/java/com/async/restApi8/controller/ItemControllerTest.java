@@ -2,9 +2,7 @@ package com.async.restApi8.controller;
 
 import com.async.restApi8.dto.ItemRequestDto;
 import com.async.restApi8.dto.ItemResponseDto;
-import com.async.restApi8.entity.Item;
 import com.async.restApi8.service.ItemService;
-import org.aspectj.lang.annotation.Before;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(controllers = ItemController.class)
-public class ItemControllerRestTest {
+public class ItemControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

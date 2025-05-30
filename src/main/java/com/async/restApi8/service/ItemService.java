@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -22,40 +23,42 @@ public class ItemService {
 
 
     public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
-        try {
+        if (itemRepository.existsByTitle(itemRequestDto.title())) {
+            throw new ServiceException("This title already exists");
+        }
             Item item = new Item();
             item.setTitle(itemRequestDto.title());
             item.setContent(itemRequestDto.content());
             item.setAuthor(itemRequestDto.author());
             return ItemMapper.itemToDto(itemRepository.save(item));
-        } catch (Exception e) {
-            throw new ServiceException("Failed to add item" , e);
-        }
     }
 
     public ItemResponseDto getItemById(Long id) {
-        try {
-            return ItemMapper.itemToDto(itemRepository.findById(id).get());
-        }
-        catch (Exception e) {
-            throw new ServiceException("Failed to get item" , e);
-        }
+        Item item = itemRepository.findById(id).orElseThrow(() -> new ServiceException("This ID not found"));
+        return ItemMapper.itemToDto(item);
+    }
+
+    public ItemResponseDto getItemByTitle(String title) {
+        Item item = itemRepository.findByTitle(title).orElseThrow(() -> new ServiceException("This title not found"));
+        return ItemMapper.itemToDto(item);
     }
 
     public List<ItemResponseDto> getAllItems() {
-        List<ItemResponseDto> items = new ArrayList<>();
-        itemRepository.findAll().forEach(item -> items.add(ItemMapper.itemToDto(item)));
-        return items;
+        try {
+            List<ItemResponseDto> itemDtoList = itemRepository.findAll().stream().map(item -> ItemMapper.itemToDto(item)).collect(Collectors.toList());
+            return itemDtoList;
+        } catch (Exception e) {
+            throw new ServiceException("Error getting item list");
+        }
     }
 
 
-    public ItemResponseDto updateItem(Item item) {
-        try {
-            return ItemMapper.itemToDto(itemRepository.save(item));
-        }
-        catch (Exception e) {
-            throw new ServiceException("Failed to update item" , e);
-        }
+    public ItemResponseDto updateItemById(Long id, ItemRequestDto itemRequestDto) {
+        Item item = itemRepository.findById(id).orElseThrow(() -> new ServiceException("This ID not found"));
+        item.setTitle(itemRequestDto.title());
+        item.setContent(itemRequestDto.content());
+        item.setAuthor(itemRequestDto.author());
+        return ItemMapper.itemToDto(itemRepository.save(item));
     }
 
     public ItemResponseDto deleteItem(Long id) {

@@ -32,12 +32,6 @@ public class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
-    /*
-    addUser
-    getUser
-    deleteUser
-    patchUserById
-     */
 
     @Test
     public void addUser_expectOk() throws Exception {
