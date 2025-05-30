@@ -44,12 +44,10 @@ public class ItemService {
     }
 
     public List<ItemResponseDto> getAllItems() {
-        try {
-            List<ItemResponseDto> itemDtoList = itemRepository.findAll().stream().map(item -> ItemMapper.itemToDto(item)).collect(Collectors.toList());
+            List<ItemResponseDto> itemDtoList = itemRepository.findAll().stream()
+                    .map(item -> ItemMapper.itemToDto(item))
+                    .collect(Collectors.toList());
             return itemDtoList;
-        } catch (Exception e) {
-            throw new ServiceException("Error getting item list");
-        }
     }
 
 
@@ -61,15 +59,10 @@ public class ItemService {
         return ItemMapper.itemToDto(itemRepository.save(item));
     }
 
-    public ItemResponseDto deleteItem(Long id) {
-        try {
+    public ItemResponseDto deleteItemById(Long id) {
             ItemResponseDto itemResponseDto = ItemMapper.itemToDto(itemRepository.findById(id).get());
             itemRepository.deleteById(id);
             return itemResponseDto;
-        }
-        catch (Exception e) {
-            throw new ServiceException("Failed to delete item" , e);
-        }
     }
 
 

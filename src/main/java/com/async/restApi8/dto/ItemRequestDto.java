@@ -3,8 +3,13 @@ package com.async.restApi8.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record ItemRequestDto(
-        @NotBlank String title,
+        @NotBlank(message = "Title cannot be empty")
+        String title,
+
         String content,
-        @NotBlank String author
+
+        @NotBlank(message = "Author cannot be empty")
+        String author
+
 ) {
 }
